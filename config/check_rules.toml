@@ -18,7 +18,47 @@ class = "direct_exposure"
 tactic = "Collection"
 why = "Anonymous internet read of blob data (verified with an unauthenticated request)"
 
+[checks.custom_nsg_ssh_open_to_internet]
+class = "direct_exposure"
+tactic = "Initial Access"
+why = "Attached NSG allows SSH from the internet (custom check; reads multi-port rules Prowler misses)"
+
+[checks.custom_nsg_rdp_open_to_internet]
+class = "direct_exposure"
+tactic = "Initial Access"
+why = "Attached NSG allows RDP from the internet (custom check; reads multi-port rules Prowler misses)"
+
 # ---------- P2: exposure enablers ----------
+[checks.custom_nsg_ssh_open_to_internet_unattached]
+class = "exposure_enabler"
+tactic = "Initial Access"
+why = "NSG allows SSH from the internet but is attached to nothing yet: one attachment away from P1"
+
+[checks.custom_nsg_rdp_open_to_internet_unattached]
+class = "exposure_enabler"
+tactic = "Initial Access"
+why = "NSG allows RDP from the internet but is attached to nothing yet: one attachment away from P1"
+
+[checks.network_ssh_internet_access_restricted]
+class = "exposure_enabler"
+tactic = "Initial Access"
+why = "Prowler check; can't see attachment and misses multi-port rules (custom check gives the real tier)"
+
+[checks.network_rdp_internet_access_restricted]
+class = "exposure_enabler"
+tactic = "Initial Access"
+why = "Prowler check; can't see attachment and misses multi-port rules (custom check gives the real tier)"
+
+[checks.network_http_internet_access_restricted]
+class = "exposure_enabler"
+tactic = "Initial Access"
+why = "HTTP open to the internet on an NSG"
+
+[checks.network_udp_internet_access_restricted]
+class = "exposure_enabler"
+tactic = "Initial Access"
+why = "UDP open to the internet on an NSG"
+
 [checks.storage_account_public_network_access_disabled]
 class = "exposure_enabler"
 tactic = "Initial Access"

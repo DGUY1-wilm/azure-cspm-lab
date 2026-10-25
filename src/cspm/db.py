@@ -12,7 +12,7 @@ import argparse
 import sqlite3
 from pathlib import Path
 
-from cspm.parse_prowler import ScanResult, parse_scan
+from cspm.parse_prowler import Finding, ScanResult, parse_scan
 
 DEFAULT_DB = Path("data") / "cspm.db"
 
@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS findings (
     resource_type  TEXT,
     resource_group TEXT,
     region         TEXT,
+    source         TEXT NOT NULL DEFAULT 'prowler',  -- 'prowler' or 'custom'
     UNIQUE (scan_id, check_id, resource_uid)
 );
 
@@ -83,21 +84,45 @@ def store_scan(conn: sqlite3.Connection, result: ScanResult, label: str) -> bool
              len(result.findings)),
         )
         for f in result.findings:
-            cur = conn.execute(
-                "INSERT INTO findings (scan_id, check_id, status, severity, severity_id, "
-                "title, status_detail, risk, remediation, resource_uid, resource_name, "
-                "resource_type, resource_group, region) "
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                (result.scan_id, f.check_id, f.status, f.severity, f.severity_id,
-                 f.title, f.status_detail, f.risk, f.remediation, f.resource_uid,
-                 f.resource_name, f.resource_type, f.resource_group, f.region),
-            )
-            conn.executemany(
-                "INSERT OR IGNORE INTO compliance (finding_id, framework, control) "
-                "VALUES (?, ?, ?)",
-                [(cur.lastrowid, fw, control)
-                 for fw, controls in f.compliance.items() for control in controls],
-            )
+            _insert_finding(conn, result.scan_id, f, source="prowler")
+    return True
+
+
+def _insert_finding(conn: sqlite3.Connection, scan_id: str, f: Finding, source: str) -> None:
+    """Insert one finding and its compliance mappings (caller manages the transaction)."""
+    cur = conn.execute(
+        "INSERT INTO findings (scan_id, check_id, status, severity, severity_id, "
+        "title, status_detail, risk, remediation, resource_uid, resource_name, "
+        "resource_type, resource_group, region, source) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        (scan_id, f.check_id, f.status, f.severity, f.severity_id,
+         f.title, f.status_detail, f.risk, f.remediation, f.resource_uid,
+         f.resource_name, f.resource_type, f.resource_group, f.region, source),
+    )
+    conn.executemany(
+        "INSERT OR IGNORE INTO compliance (finding_id, framework, control) VALUES (?, ?, ?)",
+        [(cur.lastrowid, fw, control)
+         for fw, controls in f.compliance.items() for control in controls],
+    )
+
+
+def store_custom_findings(conn: sqlite3.Connection, label: str,
+                          findings: list[Finding], source: str = "custom") -> bool:
+    """Attach findings from a custom check to an existing scan.
+
+    Returns False if this source's findings are already stored for that scan.
+    """
+    row = conn.execute("SELECT scan_id FROM scans WHERE label = ?", (label,)).fetchone()
+    if row is None:
+        raise ValueError(f"No scan with label '{label}'; load the Prowler scan first")
+    already = conn.execute(
+        "SELECT 1 FROM findings WHERE scan_id = ? AND source = ?", (row["scan_id"], source)
+    ).fetchone()
+    if already:
+        return False
+    with conn:
+        for f in findings:
+            _insert_finding(conn, row["scan_id"], f, source)
     return True
 
 
@@ -106,13 +131,14 @@ def print_stats(conn: sqlite3.Connection) -> None:
     rows = conn.execute(
         "SELECT s.label, s.scanned_at, s.finding_count, "
         "       SUM(f.status = 'FAIL') AS fails, SUM(f.status = 'PASS') AS passes, "
-        "       COUNT(f.id) AS stored "
+        "       SUM(f.source = 'prowler') AS stored, SUM(f.source = 'custom') AS custom "
         "FROM scans s LEFT JOIN findings f ON f.scan_id = s.scan_id "
         "GROUP BY s.scan_id ORDER BY s.scanned_at"
     ).fetchall()
     for r in rows:
         print(f"{r['label']:<20} {r['scanned_at']:<28} "
-              f"stored={r['stored']}/{r['finding_count']} FAIL={r['fails']} PASS={r['passes']}")
+              f"stored={r['stored']}/{r['finding_count']} custom={r['custom'] or 0} "
+              f"FAIL={r['fails']} PASS={r['passes']}")
 
 
 def main() -> None:
