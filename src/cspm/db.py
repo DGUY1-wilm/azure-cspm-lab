@@ -1,6 +1,6 @@
 """Store parsed Prowler scans in SQLite.
 
-[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
 
 Usage (from the repo root, with PYTHONPATH=src):
     python -m cspm.db load <ocsf.json> --label baseline
