@@ -1,4 +1,4 @@
-# [AI-generated] Claude, 2026-10-24. Reviewed by Daniel: [ ] pending
+# [AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
 name: CI
 
 on:
@@ -27,6 +27,4 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      # pytest exits with code 5 when it finds no tests. Treat that as a pass
-      # until real tests exist (milestone 4); any other failure still fails CI.
-      - run: pytest || [ $? -eq 5 ]
+      - run: pytest -v
