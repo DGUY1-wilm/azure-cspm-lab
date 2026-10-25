@@ -13,8 +13,8 @@ Along the way I found and proved a **false negative in Prowler**: its SSH check 
 that open SSH to the internet when the rule lists more than one port.
 ([write-up](docs/findings/prowler-nsg-multiport-false-negative.md))
 
-![Redacted posture report](docs/screenshots/01-report.png)
-*The generated report: tier summary and open findings across every scan. All identifiers are redacted automatically.*
+Want to run this yourself? See GETTING_STARTED.md.”
+
 
 > **Scope and authorization:** every resource was created by me, in my own Azure for Students
 > subscription, for this project. Every scan was locked to that one subscription
