@@ -2,7 +2,7 @@
 .SYNOPSIS
   Delete every lab resource: remove role assignments first, then the resource group.
 
-  [AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+  [AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
   Order matters: deleting an identity before its role assignments leaves orphaned
   assignments that show up as "Unknown" principals.
 #>
