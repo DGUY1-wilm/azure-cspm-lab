@@ -1,0 +1,4 @@
+# [AI-generated] Claude, 2026-10-24
+# Project code dependencies only. Prowler is installed separately (see README),
+# because it has many dependencies of its own.
+pytest
