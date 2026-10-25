@@ -1,0 +1,205 @@
+# Scoring rules for Prowler Azure checks.
+# [AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+#
+# Each check gets an exposure class (which sets its priority tier) and the ATT&CK
+# tactic *I* assign. Prowler's own ATT&CK tags are static per check and don't reflect
+# real exposure, so they aren't used for scoring.
+# Checks not listed here are scored "unclassified" and flagged for review.
+
+[tiers]
+direct_exposure  = "P1"  # anonymous or internet access to data/services
+exposure_enabler = "P2"  # makes a P1 reachable or easier to exploit
+detection_gap    = "P3"  # an attack would go unnoticed
+hardening        = "P4"  # defense in depth; no exposure on its own
+
+# ---------- P1: direct exposure ----------
+[checks.storage_blob_public_access_level_is_disabled]
+class = "direct_exposure"
+tactic = "Collection"
+why = "Anonymous internet read of blob data (verified with an unauthenticated request)"
+
+# ---------- P2: exposure enablers ----------
+[checks.storage_account_public_network_access_disabled]
+class = "exposure_enabler"
+tactic = "Initial Access"
+why = "Storage endpoint reachable from any network"
+
+[checks.storage_default_network_access_rule_is_denied]
+class = "exposure_enabler"
+tactic = "Initial Access"
+why = "Network rules default to Allow, so no IP restriction applies"
+
+[checks.storage_account_key_access_disabled]
+class = "exposure_enabler"
+tactic = "Credential Access"
+why = "A leaked account key grants full data access, bypassing Entra/RBAC"
+
+[checks.storage_cross_tenant_replication_disabled]
+class = "exposure_enabler"
+tactic = "Exfiltration"
+why = "Data could be replicated to another tenant"
+
+[checks.storage_secure_transfer_required_is_enabled]
+class = "exposure_enabler"
+tactic = "Credential Access"
+why = "Plain HTTP would expose data and credentials in transit"
+
+[checks.iam_role_user_access_admin_restricted]
+class = "exposure_enabler"
+tactic = "Privilege Escalation"
+why = "User Access Administrator can grant any role, including Owner"
+
+# ---------- P3: detection gaps ----------
+[checks.monitor_diagnostic_settings_exists]
+class = "detection_gap"
+tactic = "Defense Evasion"
+why = "Activity log not retained; changes could not be investigated later"
+
+[checks.monitor_diagnostic_setting_with_appropriate_categories]
+class = "detection_gap"
+tactic = "Defense Evasion"
+why = "Security-relevant log categories not retained"
+
+[checks.monitor_alert_create_update_nsg]
+class = "detection_gap"
+tactic = "Defense Evasion"
+why = "Firewall rule changes that open attack surface go unnoticed"
+
+[checks.monitor_alert_delete_nsg]
+class = "detection_gap"
+tactic = "Defense Evasion"
+why = "Removal of network protection goes unnoticed"
+
+[checks.monitor_alert_create_update_public_ip_address_rule]
+class = "detection_gap"
+tactic = "Defense Evasion"
+why = "New internet-facing IPs go unnoticed"
+
+[checks.monitor_alert_delete_public_ip_address_rule]
+class = "detection_gap"
+tactic = "Defense Evasion"
+why = "Paired with the public IP create/update alert"
+
+[checks.monitor_alert_create_policy_assignment]
+class = "detection_gap"
+tactic = "Defense Evasion"
+why = "Guardrail changes go unnoticed"
+
+[checks.monitor_alert_delete_policy_assignment]
+class = "detection_gap"
+tactic = "Defense Evasion"
+why = "Guardrail removal goes unnoticed"
+
+[checks.monitor_alert_create_update_security_solution]
+class = "detection_gap"
+tactic = "Defense Evasion"
+why = "Changes to security tooling go unnoticed"
+
+[checks.monitor_alert_delete_security_solution]
+class = "detection_gap"
+tactic = "Defense Evasion"
+why = "Removal of security tooling goes unnoticed"
+
+[checks.monitor_alert_service_health_exists]
+class = "detection_gap"
+tactic = "Defense Evasion"
+why = "No visibility into Azure-side incidents"
+
+[checks.network_watcher_enabled]
+class = "detection_gap"
+tactic = "Defense Evasion"
+why = "No network diagnostics in unused regions; partial fix only (see triage)"
+
+# ---------- P4: hardening ----------
+[checks.storage_ensure_encryption_with_customer_managed_keys]
+class = "hardening"
+why = "Key ownership control; no exposure on its own"
+
+[checks.storage_infrastructure_encryption_is_enabled]
+class = "hardening"
+why = "Second encryption layer; defense in depth"
+
+[checks.storage_ensure_private_endpoints_in_storage_accounts]
+class = "hardening"
+why = "Network isolation; reachability already scored by the P2 network checks"
+
+[checks.storage_ensure_azure_services_are_trusted_to_access_is_enabled]
+class = "hardening"
+why = "Operational access setting"
+
+[checks.storage_default_to_entra_authorization_enabled]
+class = "hardening"
+why = "Portal default auth method"
+
+[checks.storage_key_rotation_90_days]
+class = "hardening"
+why = "Limits lifetime of account keys"
+
+[checks.storage_blob_versioning_is_enabled]
+class = "hardening"
+why = "Recovery from overwrite or deletion"
+
+[checks.storage_ensure_soft_delete_is_enabled]
+class = "hardening"
+why = "Recovery from container deletion"
+
+[checks.storage_ensure_file_shares_soft_delete_is_enabled]
+class = "hardening"
+why = "Recovery from file share deletion"
+
+[checks.storage_geo_redundant_enabled]
+class = "hardening"
+why = "Resilience, not security exposure"
+
+[checks.storage_smb_channel_encryption_with_secure_algorithm]
+class = "hardening"
+why = "SMB encryption strength; no file shares in use"
+
+[checks.storage_ensure_minimum_tls_version_12]
+class = "hardening"
+why = "Protocol strength"
+
+# ---------- Exclusions (triage decisions, see docs/baseline-triage.md) ----------
+# A finding is excluded if check_id matches and, when resource_prefix is set,
+# its resource UID starts with that prefix.
+
+[[exclusions]]
+check_id = "iam_role_user_access_admin_restricted"
+resource_prefix = "/providers/Microsoft.Authorization/"
+category = "out_of_scope"
+reason = "Root-scope assignment inherited from the university tenant; not owned by this lab"
+
+[[exclusions]]
+check_id = "defender_ensure_mcas_is_enabled"
+category = "accepted_cost"
+reason = "Defender for Cloud Apps requires a paid license"
+
+[[exclusions]]
+check_id = "defender_ensure_wdatp_is_enabled"
+category = "not_applicable"
+reason = "No VMs or servers to protect (also paid)"
+
+[[exclusions]]
+check_id = "defender_ensure_iot_hub_defender_is_on"
+category = "not_applicable"
+reason = "No IoT Hub exists"
+
+[[exclusions]]
+check_id = "appinsights_ensure_is_configured"
+category = "not_applicable"
+reason = "No application to monitor"
+
+[[exclusions]]
+check_id = "network_bastion_host_exists"
+category = "not_applicable"
+reason = "No VMs to reach; Bastion is billed hourly"
+
+[[exclusions]]
+check_id = "monitor_alert_create_update_sqlserver_fr"
+category = "not_applicable"
+reason = "No SQL servers in this lab"
+
+[[exclusions]]
+check_id = "monitor_alert_delete_sqlserver_fr"
+category = "not_applicable"
+reason = "No SQL servers in this lab"
