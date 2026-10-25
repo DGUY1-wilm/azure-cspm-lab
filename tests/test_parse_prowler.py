@@ -1,4 +1,4 @@
-"""[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending"""
+"""[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending"""
 import pytest
 
 from cspm.parse_prowler import ParseError, parse_scan
