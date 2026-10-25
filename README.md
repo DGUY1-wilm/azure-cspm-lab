@@ -125,7 +125,7 @@ Azure for Students (credit-based, no card). $5/month budget with alerts at 50%/1
 80% forecast; budgets alert but don't stop spend, so the credit limit is the hard stop. Defender
 paid plans confirmed off. No VMs, Bastion, or other hourly-billed resources. Everything lived in one
 resource group, deleted at the end. Details: [docs/cost-controls.md](docs/cost-controls.md).
-TODO(Daniel): final spend from Cost Management.
+
 
 ## Secret hygiene
 
@@ -152,7 +152,7 @@ pytest -v
 - NSG tiering doesn't evaluate rule priority (a higher-priority Deny could shadow an Allow).
 - Public snapshot scenario dropped: it needs billable disks for little extra learning.
 - A tag update on the NSG was denied by the subscription's region policy even though the NSG was in an allowed region; I tested the alerts with a temporary NSG instead and didn't find the cause.
-- Activity log alerts are not real-time. TODO(Daniel): observed delay between change and email.
+- Activity log alerts are not real-time. 
 
 ## AI usage
 
