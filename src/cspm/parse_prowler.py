@@ -1,6 +1,6 @@
 """Parse Prowler OCSF JSON output into normalized finding records.
 
-[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
 
 Input:  one Prowler scan's *.ocsf.json file (a JSON array of findings).
 Output: a ScanResult holding scan metadata and a list of Finding records.
