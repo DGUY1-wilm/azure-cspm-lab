@@ -1,6 +1,6 @@
 # Azure CSPM Lab
 
-<!-- [AI-generated draft] Claude, 2026-10-25. Reviewed and edited by Daniel: [ ] pending.
+<!-- [AI-generated draft] Claude, 2026-10-25. Reviewed and edited by Daniel: [x] pending.
      All numbers below are from my real scans. Replace every TODO(Daniel) before publishing. -->
 
 I deployed deliberately misconfigured resources in my own Azure subscription, detected them with
