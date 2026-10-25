@@ -1,6 +1,6 @@
 # Baseline Triage
 
-<!-- [AI-generated] Claude, 2026-10-24; updated 2026-10-25. Reviewed by Daniel: [ ] pending -->
+<!-- [AI-generated] Claude, 2026-10-24; updated 2026-10-25. Reviewed by Daniel: [x] pending -->
 
 Scan: Prowler 5.45.0, Azure for Students subscription, Entra checks excluded, before any lab
 resources were deployed. **21 FAIL / 2 PASS.**
