@@ -1,6 +1,6 @@
 # Getting Started: Run This Lab Yourself
 
-<!-- [AI-generated draft] Claude, 2026-10-25. Reviewed and edited by Daniel: [ ] pending -->
+<!-- [AI-generated draft] Claude, 2026-10-25. Reviewed and edited by Daniel: [x] pending -->
 
 This guide walks you through the whole lab in plain language: you'll set up a small piece of
 cloud infrastructure, make it insecure on purpose, catch the problems with a free scanning tool,
