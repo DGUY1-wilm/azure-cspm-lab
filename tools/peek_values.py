@@ -1,6 +1,6 @@
 """Print non-identifying values from a Prowler OCSF JSON file to confirm field meanings.
 
-[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
 Prints check IDs, statuses, severities, and counts only: no resource or account IDs.
 """
 import json
