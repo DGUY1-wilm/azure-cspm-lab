@@ -1,6 +1,6 @@
 """Shared synthetic test data. No real scan data: all IDs and emails are fake.
 
-[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
 """
 import json
 from pathlib import Path
