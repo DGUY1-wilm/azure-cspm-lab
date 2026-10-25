@@ -1,4 +1,4 @@
-# [AI-generated] Claude, 2026-10-24. Reviewed by Daniel: [ ] pending
+# [AI-generated] Claude, 2026-10-24. Reviewed by Daniel: [x] pending
 # Runs gitleaks on staged changes before every commit and blocks the commit
 # if anything looks like a secret.
 # Setup (once):  pip install pre-commit  ->  pre-commit install
