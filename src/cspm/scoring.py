@@ -1,6 +1,6 @@
 """Prioritize stored findings using my own exposure-based rules.
 
-[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
 
 Tiers come from config/check_rules.toml, not from Prowler's severity labels.
 Scores are computed when read, never stored, so changing a rule re-scores
