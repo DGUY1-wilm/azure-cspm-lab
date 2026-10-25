@@ -137,6 +137,9 @@ in CI. Screenshots are redacted.
 
 Requires Python 3.12, Prowler 5.45.0 (via pipx), the Azure CLI, and `az login`.
 
+![Prowler CLI banner showing version 5.45.0](docs/screenshots/12-prowler-version.png)
+*All scans in this project were run with Prowler CLI 5.45.0. Prowler is an open-source project by its own maintainers; this lab isn't affiliated with it.*
+
 ```powershell
 .venv\Scripts\Activate.ps1
 .\scripts\run_scan.ps1 -Label my-scan -Before previous-scan   # scan → load → custom check → score → diff → report
