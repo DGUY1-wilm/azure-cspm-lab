@@ -1,6 +1,6 @@
 """Generate a redacted HTML report from the scan database.
 
-[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
 
 Every piece of text passes through redact() before it is written, because Prowler
 embeds subscription IDs inside status_detail. Output contains no GUIDs or emails.
