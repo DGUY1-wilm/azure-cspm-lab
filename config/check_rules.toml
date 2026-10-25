@@ -1,5 +1,5 @@
 # Scoring rules for Prowler Azure checks.
-# [AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+# [AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
 #
 # Each check gets an exposure class (which sets its priority tier) and the ATT&CK
 # tactic *I* assign. Prowler's own ATT&CK tags are static per check and don't reflect
