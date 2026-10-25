@@ -1,6 +1,6 @@
 """Compare two stored scans: which failing findings are new, fixed, gone, or persisting.
 
-[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
 
 Finding identity across scans is (check_id, resource_uid).
   new        - failing in the later scan, not failing in the earlier one
