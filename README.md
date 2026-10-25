@@ -157,4 +157,4 @@ pytest -v
 ## AI usage
 
 I used Claude as a pair-programming mentor. Every AI-generated file is labeled in its header and
-logged in [AI_USAGE.md](AI_USAGE.md); I ran, verified, and can explain all of it.
+logged in [AI_USAGE.md](AI_USAGE.md); I ran and verified all of it.
