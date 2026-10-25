@@ -1,6 +1,6 @@
 """Show which MITRE ATT&CK tactics Prowler maps to each check (no IDs printed).
 
-[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
 """
 import json
 import sys
