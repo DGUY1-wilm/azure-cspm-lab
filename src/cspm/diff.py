@@ -6,6 +6,9 @@ Finding identity across scans is (check_id, resource_uid).
   new        - failing in the later scan, not failing in the earlier one
   fixed      - failing earlier; same check + resource now PASSES (remediated)
   gone       - failing earlier; check + resource absent later (e.g. resource deleted)
+  Exception: "does X exist?" checks fail on the subscription itself but pass on the
+  resource that satisfies them (e.g. the new alert rule). A subscription-level failure
+  that disappears while the same check now PASSES is counted as fixed, not gone.
   persisting - failing in both
 
 Usage (from the repo root, with PYTHONPATH=src):
@@ -14,6 +17,7 @@ Usage (from the repo root, with PYTHONPATH=src):
 from __future__ import annotations
 
 import argparse
+import re
 import sqlite3
 from collections import Counter
 from dataclasses import dataclass
@@ -22,6 +26,7 @@ from cspm.db import DEFAULT_DB, connect
 from cspm.scoring import DEFAULT_RULES, TIER_ORDER, load_rules, score_finding
 
 FAILING = ("FAIL", "MANUAL")
+SUBSCRIPTION_UID = re.compile(r"^/subscriptions/[^/]+$", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -46,13 +51,18 @@ def compare(conn: sqlite3.Connection, before: str, after: str, rules: dict) -> l
     old = _findings_by_identity(conn, before)
     new = _findings_by_identity(conn, after)
     changes = []
+    passing_checks_later = {f["check_id"] for f in new.values() if f["status"] == "PASS"}
 
     for key, finding in old.items():
         if finding["status"] not in FAILING:
             continue
         later = new.get(key)
         if later is None:
-            kind, source = "gone", finding
+            subscription_level = bool(SUBSCRIPTION_UID.match(finding["resource_uid"]))
+            if subscription_level and finding["check_id"] in passing_checks_later:
+                kind, source = "fixed", finding
+            else:
+                kind, source = "gone", finding
         elif later["status"] in FAILING:
             kind, source = "persisting", later
         else:
