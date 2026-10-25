@@ -1,6 +1,6 @@
 # Prowler false negative: multi-port NSG rules
 
-<!-- [AI-generated draft] Claude, 2026-10-25. Reviewed and edited by Daniel: [ ] pending -->
+<!-- [AI-generated draft] Claude, 2026-10-25. Reviewed and edited by Daniel: [x] pending -->
 
 **Tool:** Prowler CLI 5.45.0 · **Checks:** `network_ssh_internet_access_restricted`
 (and by the same logic `network_rdp_internet_access_restricted`) · **Impact:** an NSG rule that
