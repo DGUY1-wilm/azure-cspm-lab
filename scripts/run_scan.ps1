@@ -5,7 +5,7 @@
 .EXAMPLE
   .\scripts\run_scan.ps1 -Label after-teardown -Before after-alerts
 
-  [AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+  [AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
   Native commands (az, prowler, python) don't stop PowerShell on failure, so every step checks
   its exit code explicitly. A failed step stops the run instead of feeding bad data forward.
 #>
