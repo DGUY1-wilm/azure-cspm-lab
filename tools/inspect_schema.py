@@ -1,6 +1,6 @@
 """Print the field structure of a Prowler OCSF JSON file: names and types only, no values.
 
-[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
 Dev helper for designing the parser. Prints no data, so output is safe to share.
 """
 import json
