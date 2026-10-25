@@ -102,7 +102,7 @@ def main() -> None:
     parser.add_argument("--db", default=DEFAULT_DB)
     args = parser.parse_args()
 
-        text = Path(args.input).read_text(encoding="utf-8-sig")
+    text = Path(args.input).read_text(encoding="utf-8-sig")
     if not text.strip():
         raise SystemExit(f"{args.input} is empty; did the 'az network nsg list' command fail?")
     nsgs = json.loads(text)
