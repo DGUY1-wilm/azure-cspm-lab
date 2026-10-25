@@ -1,6 +1,6 @@
 """Tests for the custom NSG check that covers Prowler's multi-port false negative.
 
-[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
 """
 import pytest
 
