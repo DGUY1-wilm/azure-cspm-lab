@@ -1,4 +1,4 @@
-"""[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending"""
+"""[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending"""
 from cspm.diff import compare
 from conftest import SUB_UID, make_finding
 
