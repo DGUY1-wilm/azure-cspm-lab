@@ -1,6 +1,6 @@
 """Custom NSG check covering a confirmed Prowler false negative.
 
-[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [ ] pending
+[AI-generated] Claude, 2026-10-25. Reviewed by Daniel: [x] pending
 
 Why this exists: Prowler 5.45.0's network_ssh/rdp_internet_access_restricted checks
 read only a rule's singular destination port field. Azure stores multi-port rules in
