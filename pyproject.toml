@@ -1,0 +1,5 @@
+# [AI-generated] Claude, 2026-10-24
+# Lets tests import the package as `cspm` without installing it.
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

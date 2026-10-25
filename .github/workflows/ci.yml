@@ -1,0 +1,32 @@
+# [AI-generated] Claude, 2026-10-24. Reviewed by Daniel: [ ] pending
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0          # full history, so gitleaks scans every past commit
+      - uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # provided automatically by GitHub
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      # pytest exits with code 5 when it finds no tests. Treat that as a pass
+      # until real tests exist (milestone 4); any other failure still fails CI.
+      - run: pytest || [ $? -eq 5 ]

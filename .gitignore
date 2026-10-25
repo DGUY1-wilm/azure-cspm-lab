@@ -1,0 +1,44 @@
+# [AI-generated] Claude, 2026-10-24. Reviewed by Daniel: [ ] pending
+# Goal: nothing that identifies my Azure account (subscription/tenant IDs,
+# resource IDs) or any credential can ever be committed.
+
+# --- Raw scan output (contains subscription ID, tenant ID, resource IDs) ---
+scans/*
+!scans/.gitkeep
+# Prowler's default output folder when no output path is given
+output/
+
+# --- Local databases built from scan data ---
+data/*
+!data/.gitkeep
+*.db
+*.sqlite
+*.sqlite3
+
+# --- Generated reports (built from real data; publish only redacted copies) ---
+reports/
+
+# --- Environment / secrets ---
+.env
+.env.*
+!.env.example
+*.pem
+*.pfx
+*.key
+*secret*
+*credential*
+
+# --- Python clutter ---
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
