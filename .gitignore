@@ -1,4 +1,4 @@
-# [AI-generated] Claude, 2026-10-24. Reviewed by Daniel: [ ] pending
+# [AI-generated] Claude, 2026-10-24. Reviewed by Daniel: [x] pending
 # Goal: nothing that identifies my Azure account (subscription/tenant IDs,
 # resource IDs) or any credential can ever be committed.
 
